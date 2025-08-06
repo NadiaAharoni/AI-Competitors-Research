@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניתוח תחרותי: סוכני AI עבור ICL Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: A multi-section, dashboard-style SPA with a fixed navigation header. The structure prioritizes user-driven exploration, starting with a high-level overview, then allowing deep dives into the competitive landscape (filterable cards/modals), a specific ICL analysis, cross-industry trends, competitor website analysis, actionable strategic use cases, and a concluding summary. This non-linear structure is chosen over a simple report format to allow different stakeholders (e.g., strategy, sales, R&D) to quickly access the information most relevant to them, enhancing usability and comprehension. -->
+    <!-- Visualization & Content Choices: Report Info: Competitor AI focus areas -> Goal: Compare -> Viz: Interactive Horizontal Bar Chart (Chart.js) -> Interaction: Hover for details -> Justification: Provides a quick, scannable overview of the competitive landscape. Report Info: ICL vs. Competitors -> Goal: Compare -> Viz: Radar Chart (Chart.js) -> Interaction: Tooltips on hover -> Justification: Effectively highlights ICL's strategic positioning and potential gaps against peers across multiple dimensions. Report Info: Detailed company data -> Goal: Organize/Inform -> Presentation: Filterable Cards with Modals -> Interaction: Click to expand -> Justification: Manages information density, allowing users to drill down without overwhelming the main view. Report Info: Cross-industry trends -> Goal: Inform -> Presentation: Text blocks with key takeaways -> Interaction: Scroll -> Justification: Provides essential context on broader AI adoption. Report Info: Competitor website AI/chat presence -> Goal: Inform -> Presentation: List with brief descriptions -> Interaction: Scroll -> Justification: Direct observation of competitor's customer-facing AI. CONFIRMATION: NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Assistant', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 500px;
+            }
+        }
+        .active-nav {
+            color: #14b8a6;
+            border-bottom: 2px solid #14b8a6;
+        }
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-teal-600">ICL | ניתוח סוכני AI</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4 space-x-reverse">
+                        <a href="#overview" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600">סקירה כללית</a>
+                        <a href="#landscape" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600">נוף תחרותי</a>
+                        <a href="#icl-analysis" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600">ניתוח ICL</a>
+                        <a href="#cross-industry" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600">מגמות בין-תעשייתיות</a>
+                        <a href="#website-check" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600">בדיקת אתרים</a>
+                        <a href="#use-cases" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600">מקרי שימוש</a>
+                        <a href="#summary" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-teal-600">סיכום</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <section id="overview" class="pt-16 -mt-16 mb-12">
+            <h1 class="text-4xl font-bold text-slate-900 mb-2">הזדמנות אסטרטגית: סוכני AI בנוף התחרותי של ICL</h1>
+            <p class="text-lg text-slate-600 max-w-4xl mb-8">
+                אפליקציה זו מסכמת את ממצאי המחקר על אימוץ סוכני בינה מלאכותית (AI) בקרב מתחריה המרכזיים של ICL. הניתוח חושף כיצד חברות מובילות ממנפות AI כדי להניע יעילות תפעולית, חדשנות בחקלאות מדויקת ושיפור חווית הלקוח, ומספק תובנות והמלצות אסטרטגיות עבור ICL.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-teal-500">
+                    <h3 class="text-slate-500 text-sm font-semibold uppercase">מתחרים מנותחים</h3>
+                    <p class="text-3xl font-bold text-slate-900 mt-2">11</p>
+                    <p class="text-sm text-slate-500 mt-1">בפלחים המרכזיים</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-sky-500">
+                    <h3 class="text-slate-500 text-sm font-semibold uppercase">תחום מיקוד עיקרי</h3>
+                    <p class="text-3xl font-bold text-slate-900 mt-2">חקלאות מדויקת</p>
+                    <p class="text-sm text-slate-500 mt-1">בקרב מתחרי הדשנים</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-amber-500">
+                    <h3 class="text-slate-500 text-sm font-semibold uppercase">חיסכון מדווח (Albemarle)</h3>
+                    <p class="text-3xl font-bold text-slate-900 mt-2">$150M+</p>
+                    <p class="text-sm text-slate-500 mt-1">בשיפורים תפעוליים שנתיים</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-indigo-500">
+                    <h3 class="text-slate-500 text-sm font-semibold uppercase">האצת פיתוח (Lanxess)</h3>
+                    <p class="text-3xl font-bold text-slate-900 mt-2">>50%</p>
+                    <p class="text-sm text-slate-500 mt-1">קיצור זמן פיתוח מוצרים</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="landscape" class="pt-16 -mt-16 mb-12">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">נוף תחרותי: אימוץ סוכני AI</h2>
+            <p class="text-lg text-slate-600 max-w-4xl mb-8">
+                חלק זה מציג ניתוח של האופן שבו מתחריה המרכזיים של ICL מיישמים סוכני AI. ניתן לסנן את המתחרים לפי פלח עסקי וללחוץ על כל חברה לקבלת פירוט מעמיק על היוזמות, המטרות והתוצאות שלה.
+            </p>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-xl font-semibold text-slate-800 mb-4">תחומי מיקוד של סוכני AI בקרב המתחרים</h3>
+                <div class="chart-container">
+                    <canvas id="competitorFocusChart"></canvas>
+                </div>
+            </div>
+
+            <div class="mb-6 flex flex-wrap gap-2">
+                <button class="filter-btn bg-teal-500 text-white px-4 py-2 rounded-full text-sm" data-filter="all">הכל</button>
+                <button class="filter-btn bg-white text-slate-700 px-4 py-2 rounded-full text-sm border border-slate-300" data-filter="דשנים">דשנים</button>
+                <button class="filter-btn bg-white text-slate-700 px-4 py-2 rounded-full text-sm border border-slate-300" data-filter="מוצרים תעשייתיים">מוצרים תעשייתיים</button>
+            </div>
+
+            <div id="competitor-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="icl-analysis" class="pt-16 -mt-16 mb-12">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">ניתוח ICL והמלצות</h2>
+            <p class="text-lg text-slate-600 max-w-4xl mb-8">
+                כאן אנו משווים את יוזמות ה-AI של ICL לאלו של מתחריה בתחום הדשנים, מזהים את המשמעויות האסטרטגיות ומציגים המלצות קונקרטיות להמשך הדרך.
+            </p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">השוואת תחומי מיקוד AI: ICL מול מתחרי הדשנים</h3>
+                     <div class="chart-container h-[450px] max-h-[60vh]">
+                        <canvas id="iclVsCompetitorsChart"></canvas>
+                    </div>
+                    <p class="text-slate-600 mt-4">
+                        התרשים מציג את מיקומה של ICL ביחס לממוצע מתחרי הדשנים המובילים בתחומי מיקוד ה-AI. ניתן לראות ש-ICL פעילה במגוון רחב של תחומים, בדומה למתחרים, אך ישנם פערים פוטנציאליים במידת העומק או ההשקעה בתחומים מסוימים. בעוד ש-ICL מראה נוכחות חזקה בחקלאות מדויקת ומו"פ, ייתכן שקיים פוטנציאל לחיזוק נוסף בתחום שירות הלקוחות מבוסס AI, כפי שחלק מהמתחרים מדגימים.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">המלצות אסטרטגיות עבור ICL</h3>
+                    <ul class="space-y-4 text-slate-600">
+                        <li class="flex items-start">
+                            <span class="text-teal-500 mr-3 mt-1">➔</span>
+                            <div>
+                                <h4 class="font-semibold text-slate-800">האצת אימוץ בחקלאות מדויקת</h4>
+                                <p>לפתח ולהרחיב פתרונות AI המספקים ערך מוסף לחקלאים, בדומה ל-Nutrien ו-Yara, כדי לחזק את מעמד "פתרונות חקלאיים חדשניים".</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-teal-500 mr-3 mt-1">➔</span>
+                            <div>
+                                <h4 class="font-semibold text-slate-800">אופטימיזציה תפעולית מונעת AI</h4>
+                                <p>ליישם סוכני AI לאופטימיזציה של שרשרת האספקה, ייצור ותהליכים פנימיים, בדומה ל-Mosaic ו-Albemarle, כדי להשיג חיסכון בעלויות ויעילות.</p>
+                            </div>
+                        </li>
+                         <li class="flex items-start">
+                             <span class="text-teal-500 mr-3 mt-1">➔</span>
+                            <div>
+                                <h4 class="font-semibold text-slate-800">בניית אסטרטגיית נתונים מאוחדת</h4>
+                                <p>להשקיע בתשתית נתונים מרכזית (בדומה ל-Data Cloud) שתשמש בסיס אמין ויציב לכל יוזמות ה-AI העתידיות בארגון.</p>
+                            </div>
+                        </li>
+                         <li class="flex items-start">
+                             <span class="text-teal-500 mr-3 mt-1">➔</span>
+                            <div>
+                                <h4 class="font-semibold text-slate-800">מינוף AI לחדשנות במוצרים</h4>
+                                <p>לחקור שימוש ב-AI להאצת מחקר ופיתוח בפלחי המוצרים התעשייתיים והמזון, בדומה ל-Lanxess, כדי לקצר את זמן היציאה לשוק.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="cross-industry" class="pt-16 -mt-16 mb-12">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">מגמות בין-תעשייתיות ויישומי סוכני בינה מלאכותית מתפתחים</h2>
+            <p class="text-lg text-slate-600 max-w-4xl mb-8">
+                סוכני AI אינם מוגבלים לתעשיית הדשנים או הכימיה. הם מהווים כוח טרנספורמטיבי במגוון רחב של תעשיות, ומציגים מגמות ויישומים מתפתחים שיכולים להוות השראה גם עבור ICL.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">אופטימיזציה תפעולית</h3>
+                    <p class="text-slate-600 mb-2">
+                        בתעשיות כמו ייצור, לוגיסטיקה ואנרגיה, סוכני AI משמשים לאופטימיזציה של שרשראות אספקה, תחזוקה חזויה של ציוד, ניהול מלאי חכם וייעול צריכת אנרגיה. הם מנתחים נתונים בזמן אמת כדי לזהות חריגות, לחזות כשלים ולבצע התאמות אוטומטיות, מה שמוביל לחיסכון משמעותי בעלויות ולשיפור היעילות.
+                    </p>
+                    <p class="text-sm text-slate-500">דוגמאות: תעשיית הרכב, חברות אנרגיה גדולות.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">שיפור חווית לקוח</h3>
+                    <p class="text-slate-600 mb-2">
+                        במגזרי הקמעונאות, הפיננסים והשירותים, סוכני AI משנים את האינטראקציה עם הלקוחות. צ'אטבוטים מתקדמים, עוזרים וירטואליים ומערכות המלצה מותאמות אישית מספקים תמיכה 24/7, מייעלים תהליכי מכירה ומגבירים שביעות רצון. הם לומדים מהתנהגות הלקוח ומציעים פתרונות פרואקטיביים.
+                    </p>
+                    <p class="text-sm text-slate-500">דוגמאות: בנקים, חברות טלקום, פלטפורמות מסחר אלקטרוני.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">האצת חדשנות ומו"פ</h3>
+                    <p class="text-slate-600 mb-2">
+                        בתחומי הביוטכנולוגיה, הפארמה וחומרים מתקדמים, סוכני AI מאיצים את תהליכי המחקר והפיתוח. הם מנתחים כמויות עצומות של נתונים מדעיים, מזהים דפוסים, מציעים מולקולות או חומרים חדשים, ומבצעים סימולציות וירטואליות. זה מקצר משמעותית את זמן היציאה לשוק ומפחית עלויות פיתוח.
+                    </p>
+                    <p class="text-sm text-slate-500">דוגמאות: חברות תרופות, מעבדות מחקר, חברות כימיקלים מיוחדים.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">אבטחת סייבר וניהול סיכונים</h3>
+                    <p class="text-slate-600 mb-2">
+                        בתעשיות רגישות לסיכונים כמו פיננסים וביטחון, סוכני AI משמשים לזיהוי איומי סייבר בזמן אמת, מניעת הונאות, ניטור עמידה ברגולציה וניתוח סיכונים פיננסיים. הם מסוגלים לזהות דפוסים חריגים במהירות גבוהה יותר מבני אדם.
+                    </p>
+                    <p class="text-sm text-slate-500">דוגמאות: בנקים, חברות אבטחת סייבר, חברות ביטוח.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="website-check" class="pt-16 -mt-16 mb-12">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">בדיקת סוכני AI/צ'אט באתרי מתחרי הדשנים</h2>
+            <p class="text-lg text-slate-600 max-w-4xl mb-8">
+                בדיקה מהירה של אתרי האינטרנט של מתחרי ICL בפלח הדשנים חושפת את רמת האימוץ של סוכני AI או צ'אטבוטים המיועדים לשירות לקוחות או תמיכה טכנית. ממצאים אלו משקפים את המיקוד של החברות בשיפור חווית המשתמש הדיגיטלית.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">The Mosaic Company</h3>
+                    <p class="text-slate-600">
+                        <strong>מצב:</strong> צ'אטבוט מתקדם (Mosaicx) זמין בדפי תמיכה ומוצר.
+                        <br><strong>פונקציונליות:</strong> מענה על שאלות נפוצות, הפנייה למשאבים, איסוף מידע ליצירת קשר עם נציג.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">Nutrien Ltd.</h3>
+                    <p class="text-slate-600">
+                        <strong>מצב:</strong> צ'אט חי זמין בשעות הפעילות, לעיתים עם מענה אוטומטי ראשוני.
+                        <br><strong>פונקציונליות:</strong> תמיכה כללית, שאלות על הזמנות, הפנייה לסניפים מקומיים.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">Yara International</h3>
+                    <p class="text-slate-600">
+                        <strong>מצב:</strong> צ'אטבוט מבוסס AI (YaraBot) זמין 24/7.
+                        <br><strong>פונקציונליות:</strong> מידע אגרונומי בסיסי, תמיכה טכנית במוצרים, הפנייה למאמרים ומומחים.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">קבוצת חיפה</h3>
+                    <p class="text-slate-600">
+                        <strong>מצב:</strong> מערכת צ'אט בסיסית או טופס יצירת קשר.
+                        <br><strong>פונקציונליות:</strong> הפנייה לנציג, מידע כללי. האפליקציה הייעודית Croptune™ היא הכלי העיקרי לאינטראקציה מונעת AI.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">PhosAgro</h3>
+                    <p class="text-slate-600">
+                        <strong>מצב:</strong> טופס יצירת קשר בלבד, ללא צ'אטבוט או צ'אט חי.
+                        <br><strong>פונקציונליות:</strong> אין סוכני AI או צ'אטבוטים גלויים באתר.
+                    </p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold text-slate-800 mb-3">OCP Group</h3>
+                    <p class="text-slate-600">
+                        <strong>מצב:</strong> צ'אטבוט מבוסס AI מתקדם (OCP Cloud Platform) זמין.
+                        <br><strong>פונקציונליות:</strong> תמיכה רב-לשונית, מענה מפורט לשאלות, ניווט באתר, הפנייה למשאבים.
+                    </p>
+                </div>
+            </div>
+            <p class="text-slate-600 mt-6">
+                <strong>מסקנה:</strong> רוב המתחרים המובילים בתחום הדשנים משלבים צ'אטבוטים או צ'אט חי באתריהם, כאשר חלקם (כמו Mosaic ו-Yara) מציגים יכולות AI מתקדמות יותר. זה מצביע על מגמה ברורה של שיפור חווית הלקוח באמצעות אוטומציה ותמיכה דיגיטלית.
+            </p>
+        </section>
+
+        <section id="use-cases" class="pt-16 -mt-16">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">מקרי שימוש אסטרטגיים לשיפור אימוץ CRM</h2>
+            <p class="text-lg text-slate-600 max-w-4xl mb-8">
+                סוכני AI יכולים לפתור את אתגר אימוץ ה-CRM הנמוך על ידי הפיכת המערכת מכלי רישום פסיבי לשותף מכירות אקטיבי. חלק זה מפרט מקרי שימוש מרכזיים, כיצד הם פועלים ומה נדרש כדי ליישם אותם.
+            </p>
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="w-full md:w-1/3">
+                    <div id="use-case-tabs" class="flex md:flex-col flex-wrap gap-2">
+                        <button class="use-case-tab text-right w-full px-4 py-3 rounded-lg bg-teal-500 text-white font-semibold" data-target="uc-1">הסמכת לידים אוטומטית</button>
+                        <button class="use-case-tab text-right w-full px-4 py-3 rounded-lg bg-white text-slate-600 font-semibold" data-target="uc-2">אימון מכירות בזמן אמת</button>
+                        <button class="use-case-tab text-right w-full px-4 py-3 rounded-lg bg-white text-slate-600 font-semibold" data-target="uc-3">עדכוני CRM פרואקטיביים</button>
+                        <button class="use-case-tab text-right w-full px-4 py-3 rounded-lg bg-white text-slate-600 font-semibold" data-target="uc-4">יצירת הצעות מחיר</button>
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3">
+                    <div id="use-case-content" class="bg-white p-6 rounded-lg shadow-md min-h-[400px]">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="summary" class="pt-16 -mt-16 mb-12">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">סיכום</h2>
+            <p class="text-lg text-slate-600 max-w-4xl mb-8">
+                לסיכום, ניתוח הנוף התחרותי מראה שסוכני AI אינם עוד טרנד עתידי, אלא כלי אסטרטגי קריטי המאומץ באופן נרחב על ידי מובילי תעשייה. ICL, עם יוזמות ה-AI הקיימות שלה, ממוקמת היטב אך יכולה להרחיב ולעמיק את השפעת ה-AI בתחומים קריטיים.
+            </p>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold text-slate-800 mb-3">נקודות מפתח:</h3>
+                <ul class="list-disc pl-5 space-y-2 text-slate-600">
+                    <li><strong>אימוץ נרחב:</strong> מתחרים רבים, במיוחד בתחום הדשנים, כבר ממנפים AI לאופטימיזציה תפעולית, חקלאות מדויקת ושירות לקוחות.</li>
+                    <li><strong>הזדמנות ל-ICL:</strong> יש ל-ICL פוטנציאל עצום להרחיב את השימוש בסוכני AI כדי להגביר יעילות, לחדש מוצרים ולשפר את חווית הלקוח, במיוחד בחטיבת הדשנים (Growing Solutions).</li>
+                    <li><strong>חשיבות הנתונים:</strong> הצלחת יוזמות AI תלויה באופן קריטי באיכות ובנגישות הנתונים. השקעה בתשתית נתונים מאוחדת היא חיונית.</li>
+                    <li><strong>יתרון תחרותי:</strong> אימוץ פרואקטיבי של סוכני AI יכול להעניק ל-ICL יתרון תחרותי משמעותי, להפחית עלויות ולהניע צמיחה.</li>
+                </ul>
+                <p class="text-slate-600 mt-4">
+                    המלצות אלו, יחד עם מקרי השימוש המוצגים, מספקים מפת דרכים ל-ICL למינוף AI באופן שיטתי ואסטרטגי, תוך התמודדות עם אתגרים קיימים ופתיחת הזדמנויות חדשות.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="competitor-modal" class="modal fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4" style="opacity: 0; pointer-events: none;">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
+            <div class="p-6">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 id="modal-title" class="text-2xl font-bold text-slate-900"></h3>
+                        <p id="modal-segment" class="text-sm text-teal-600 font-semibold"></p>
+                    </div>
+                    <button id="modal-close" class="text-slate-400 hover:text-slate-600">&times;</button>
+                </div>
+                <div id="modal-body" class="mt-4 prose prose-slate max-w-none"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const competitorData = {
+                "The Mosaic Company": {
+                    segment: "דשנים",
+                    focus: ["חקלאות מדויקת", "תפעול ושרשרת אספקה", "שירות לקוחות", "מו\"פ"],
+                    content: `
+                        <h4>אסטרטגיה ויישום:</h4>
+                        <p>Mosaic מיישמת אסטרטגיית AI הוליסטית ומקיפה, המכסה את כל שרשרת הערך. היא משתמשת בפלטפורמות כמו <strong>Mosaic AI Agent Framework</strong> של Databricks ו-<strong>Mosaicx</strong> לשירות לקוחות.</p>
+                        <h4>מטרות ויישומים מרכזיים:</h4>
+                        <ul>
+                            <li><strong>חקלאות מדויקת:</strong> ניתוח נתוני קרקע, יבולים ומזג אוויר להמלצות דישון.</li>
+                            <li><strong>אופטימיזציה תפעולית:</strong> ייעול שרשרת האספקה, אוטומציה של תהליכים פנימיים (תשלומים, משאבי אנוש).</li>
+                            <li><strong>שירות לקוחות:</strong> צ'אטבוטים, עוזרים וירטואליים והכוונה בזמן אמת לסוכנים.</li>
+                            <li><strong>מו"פ:</strong> ניתוח מערכי נתונים גדולים להאצת פיתוח מוצרים חדשים.</li>
+                        </ul>
+                        <h4>תוצאות ויתרונות:</h4>
+                        <p>החברה מדווחת על עלייה בתפוקת יבולים, הפחתת השפעה סביבתית, חיסכון של 70-90 מיליון דולר בניהול חוזים, ומחזורי חדשנות מהירים יותר.</p>
+                    `
+                },
+                "Nutrien Ltd.": {
+                    segment: "דשנים",
+                    focus: ["חקלאות מדויקת"],
+                    content: `
+                        <h4>אסטרטגיה ויישום:</h4>
+                        <p>Nutrien מתמקדת בחקלאות היפר-מדויקת באמצעות שותפויות טכנולוגיות, כמו <strong>Nutrien Digital Scout (מופעל על ידי Taranis)</strong> ואינטגרציה עם <strong>Treetoscope</strong>.</p>
+                        <h4>מטרות ויישומים מרכזיים:</h4>
+                        <ul>
+                            <li><strong>חקלאות מדויקת:</strong> שימוש ברחפנים וניתוח תמונות ברזולוציה גבוהה לזיהוי בעיות בשדה.</li>
+                            <li><strong>אופטימיזציה של שימוש במים:</strong> חיישנים מבוססי צמח ומודלי AI להמלצות השקיה מדויקות בזמן אמת.</li>
+                        </ul>
+                        <h4>תוצאות ויתרונות:</h4>
+                        <p>הגישה מובילה לתובנות שדה מפורטות, המלצות מותאמות אישית, עלייה בתפוקה, הפחתת בזבוז מים ושיפור העמידות לשינויי אקלים.</p>
+                    `
+                },
+                "Yara International": {
+                    segment: "דשנים",
+                    focus: ["חקלאות מדויקת", "שירות לקוחות"],
+                    content: `
+                        <h4>אסטרטגיה ויישום:</h4>
+                        <p>Yara בונה <strong>"מערכת אקולוגית דיגיטלית"</strong> מקיפה המשלבת כלים, חומרה ופלטפורמות נתונים. היא מפעילה יחידת <strong>Yara AgTech</strong> ייעודית.</p>
+                        <h4>מטרות ויישומים מרכזיים:</h4>
+                        <ul>
+                            <li><strong>אופטימיזציה של תזונת יבולים:</strong> פתרונות תזונה מדויקים באמצעות חיישנים כמו N-Sensor ו-N-Tester.</li>
+                            <li><strong>ניהול חווה ומסחר אלקטרוני:</strong> אפליקציות מובייל לניהול חווה, הזמנת דשנים וחיבור לשווקים.</li>
+                            <li><strong>אינטגרציית נתונים:</strong> ממשקי API (YaraFX Insight) לשילוב ידע אגרונומי במערכות צד שלישי.</li>
+                        </ul>
+                        <h4>תוצאות ויתרונות:</h4>
+                        <p>האסטרטגיה מסייעת לחקלאים לגדל יבולים יעילים, ברי קיימא ורווחיים יותר, ומשפרת את הקישוריות שלהם לידע ולשווקים.</p>
+                    `
+                },
+                "קבוצת חיפה": {
+                    segment: "דשנים",
+                    focus: ["חקלאות מדויקת"],
+                    content: `
+                        <h4>אסטרטגיה ויישום:</h4>
+                        <p>קבוצת חיפה מתמקדת בדמוקרטיזציה של חקלאות מדויקת באמצעות אפליקציית הסמארטפון <strong>Croptune™</strong>.</p>
+                        <h4>מטרות ויישומים מרכזיים:</h4>
+                        <ul>
+                            <li><strong>דישון מדויק:</strong> האפליקציה מספקת ניתוח חנקן מדויק ומיידי ישירות מהשדה באמצעות צילום תמונה, ומאפשרת התאמות בזמן.</li>
+                            <li><strong>יעילות משאבים:</strong> הימנעות מדישון יתר, חיסכון בזמן ובכסף.</li>
+                        </ul>
+                        <h4>תוצאות ויתרונות:</h4>
+                        <p>הגישה מעצימה מגדלים בודדים, מרחיבה את טווח השוק ומחזקת את נאמנות הלקוחות באמצעות כלי מעשי ונגיש.</p>
+                    `
+                },
+                 "PhosAgro": {
+                    segment: "דשנים",
+                    focus: ["חקלאות מדויקת", "מו\"פ"],
+                    content: `
+                        <h4>אסטרטגיה ויישום:</h4>
+                        <p>PhosAgro ממנפת AI כדי לעבור ממכירת מוצרים להצעת ייעוץ אגרונומי מוסף ערך, בעיקר דרך אפליקציית המובייל <strong>AgroResult</strong>.</p>
+                        <h4>מטרות ויישומים מרכזיים:</h4>
+                        <ul>
+                            <li><strong>המלצות דשן מותאמות אישית:</strong> האפליקציה מספקת המלצות ליישום אופטימלי של חומרים מזינים על בסיס פרמטרים של שדה, קרקע ויבול.</li>
+                            <li><strong>חקלאות בת קיימא:</strong> תרומה לכימיה ירוקה באמצעות מחקר מתקדם.</li>
+                        </ul>
+                        <h4>תוצאות ויתרונות:</h4>
+                        <p>האסטרטגיה מעמיקה את קשרי הלקוחות, מבטיחה שימוש אופטימלי במוצרים ומשפרת את ניהול היבולים.</p>
+                    `
+                },
+                "OCP Group": {
+                    segment: "דשנים",
+                    focus: ["שירות לקוחות", "מו\"פ", "תפעול ושרשרת אספקה"],
+                    content: `
+                        <h4>אסטרטגיה ויישום:</h4>
+                        <p>ל-OCP אסטרטגיית AI דו-כיוונית: מיקוד חיצוני חזק בשירות לקוחות באמצעות <strong>OCP Cloud Platform</strong>, ומיקוד פנימי בטיפוח חדשנות טכנולוגית עמוקה דרך <strong>ChemTechxAI</strong>.</p>
+                        <h4>מטרות ויישומים מרכזיים:</h4>
+                        <ul>
+                            <li><strong>שירות לקוחות:</strong> אוטומציה של תמיכה רב-ערוצית עם AI שיחתי דמוי אדם, המשיגה דיוק של מעל 96%.</li>
+                            <li><strong>האצת חדשנות:</strong> טיפוח סטארט-אפים בתחומי טכנולוגיה עמוקה וכימיה בת קיימא.</li>
+                            <li><strong>תשתית AI:</strong> תרומה לפתרונות תשתית פתוחים (OSAI).</li>
+                        </ul>
+                        <h4>תוצאות ויתרונות:</h4>
+                        <p>החברה מדווחת על שיעורי השלמת משימות של מעל 90% בשירות לקוחות, הפחתת עלויות וזמן יציאה מהיר לשוק.</p>
+                    `
+                },
+                "Albemarle Corporation": {
+                    segment: "מוצרים תעשייתיים",
+                    focus: ["תפעול ושרשרת אספקה", "מו\"פ"],
+                    content: `
+                        <h4>אסטרטגיה ויישום:</h4>
+                        <p>אסטרטגיית ה-AI של Albemarle, תחת המותג <strong>"Albemarle Intelligence"</strong>, מוטמעת עמוק בפעולות הייצור שלה, תוך מינוף מערכת AVEVA PI.</p>
+                        <h4>מטרות ויישומים מרכזיים:</h4>
+                        <ul>
+                            <li><strong>אופטימיזציה של תהליכים:</strong> שימוש בלמעלה מ-500 מודלי למידת מכונה לזיהוי חריגות בייצור.</li>
+                            <li><strong>תחזוקה חזויה:</strong> חיזוי תקלות בציוד.</li>
+                            <li><strong>בקרת איכות:</strong> שימוש ב-SPC מונע AI לשיפור איכות המוצר.</li>
+                            <li><strong>הפחתת השפעה סביבתית:</strong> תובנות AI להפחתת אירועים סביבתיים.</li>
+                        </ul>
+                        <h4>תוצאות ויתרונות:</h4>
+                        <p>החברה מדווחת על חיסכון שנתי של למעלה מ-<strong>150 מיליון דולר</strong>, כולל חיסכון של מיליון דולר והפחתה של 75% באירועים סביבתיים.</p>
+                    `
+                },
+                "Lanxess AG": {
+                    segment: "מוצרים תעשייתיים",
+                    focus: ["מו\"פ"],
+                    content: `
+                        <h4>אסטרטגיה ויישום:</h4>
+                        <p>Lanxess מתמקדת בשימוש אסטרטגי ב-AI להאצת מחקר ופיתוח, במיוחד באמצעות שותפות עם <strong>Citrine Informatics</strong>.</p>
+                        <h4>מטרות ויישומים מרכזיים:</h4>
+                        <ul>
+                            <li><strong>האצת פיתוח מוצרים:</strong> שימוש באלגוריתמי AI לחישוב מודלים חזויים עבור ניסוחי חומרים חדשים (כמו פלסטיקה בעלת ביצועים גבוהים).</li>
+                            <li><strong>חדשנות מנתונים:</strong> מינוף נתונים פנימיים ליצירת חדשנות.</li>
+                        </ul>
+                        <h4>תוצאות ויתרונות:</h4>
+                        <p>החברה צופה קיצור של <strong>יותר מ-50%</strong> בזמן הפיתוח של ניסוחים אופטימליים, מה שמאפשר להציע מוצרים מותאמים אישית ולהפחית את זמן היציאה לשוק.</p>
+                    `
+                },
+                 "ICL Group": {
+                    segment: "דשנים",
+                    focus: ["חקלאות מדויקת", "מו\"פ", "תפעול ושרשרת אספקה", "שירות לקוחות"],
+                    content: `
+                        <h4>אסטרטגיה ויישום:</h4>
+                        <p>ICL מציגה גישה רחבה לאימוץ AI, המשלבת השקעות אסטרטגיות בסטארט-אפים (Agrematch, Protera), פיתוח פלטפורמות דיגיטליות פנימיות (Growers, Agmatix, AgroPro), ויישום AI לשיפור תהליכים תפעוליים ושירות לקוחות פנימי.</p>
+                        <h4>מטרות ויישומים מרכזיים:</h4>
+                        <ul>
+                            <li><strong>חקלאות מדויקת וניהול יבולים:</strong> מתן תובנות אגרונומיות מונעות AI, המלצות דישון מותאמות אישית, וניטור שדה.</li>
+                            <li><strong>שיפור מעורבות לקוחות (חקלאים):</strong> הגברת מכירות ונאמנות באמצעות תוכנית GROWERS Loyalty Program.</li>
+                            <li><strong>אופטימיזציה תפעולית:</strong> שיפור יעילות בייצור ובתמיכת IT פנימית (Service Desk).</li>
+                             <li><strong>האצת מו"פ:</strong> זיהוי תרכובות חדשניות באמצעות פלטפורמות AI.</li>
+                        </ul>
+                        <h4>תוצאות ויתרונות:</h4>
+                        <p>החברה מדווחת על עלייה במכירות דרך תוכנית הנאמנות, ייעול תהליכי פיתוח, הפחתה של עד 30% בעלויות ה-Service Desk ושיפורים ביעילות תפעולית.</p>
+                    `
+                }
+            };
+
+            const useCaseData = {
+                "uc-1": {
+                    title: "הסמכה וטיפוח לידים אוטומטיים",
+                    content: `
+                        <p class="mb-4">סוכני AI יכולים לנהל שיחות בזמן אמת עם לקוחות פוטנציאליים, לשאול שאלות הסמכה מתוחכמות, ולהזין נתונים עשירים ישירות ל-CRM, ובכך להבטיח שצוות המכירות מקבל לידים איכותיים ומוכנים לפעולה.</p>
+                        <h4 class="font-semibold mb-2">איך זה עובד?</h4>
+                        <p class="mb-4">הסוכן מנהל שיחה, מתאים שאלות על בסיס תגובות, מעריך כוונת רכישה, ובסיום מעדכן את ה-CRM או קובע פגישה ביומן.</p>
+                        <h4 class="font-semibold mb-2">איך לבנות את זה?</h4>
+                        <p class="mb-4">יש להגדיר קריטריוני הסמכה ברורים, לבנות את לוגיקת השיחה באמצעות כלי כמו Agent Builder, וליצור תבניות הנחיה ב-Prompt Builder כדי להנחות את הסוכן.</p>
+                        <h4 class="font-semibold mb-2">שיקולים מרכזיים:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>איכות ושלמות הנתונים ב-CRM חיונית.</li>
+                            <li>נדרשת הגדרה ברורה של "ליד מוסמך".</li>
+                            <li>יש לשלב מנגנון "אדם בלולאה" עבור מקרים מורכבים.</li>
+                        </ul>
+                    `
+                },
+                "uc-2": {
+                    title: "אימון מכירות בזמן אמת",
+                    content: `
+                        <p class="mb-4">סוכן AI יכול להצטרף לשיחות מכירה, לנתח את האינטראקציה מול נתוני ה-CRM, ולספק משוב והכוונה בזמן אמת לנציג המכירות. זה הופך את ה-CRM לכלי לפיתוח מיומנויות מתמשך.</p>
+                        <h4 class="font-semibold mb-2">איך זה עובד?</h4>
+                        <p class="mb-4">הסוכן (למשל, Salesforce Sales Coach) מנתח את השיחה, משווה אותה לנתוני ההזדמנות ב-CRM ומספק משוב מפורט. הוא יכול לשמש גם לתרגול תרחישי משא ומתן.</p>
+                        <h4 class="font-semibold mb-2">איך לבנות את זה?</h4>
+                        <p class="mb-4">ניתן להפעיל סוכנים מובנים מראש כמו של Salesforce, להקצות הרשאות מתאימות, ולהוסיף את הרכיב לדף ההזדמנות ב-CRM.</p>
+                        <h4 class="font-semibold mb-2">שיקולים מרכזיים:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>הסוכן חייב גישה לנתוני CRM רלוונטיים למשוב מדויק.</li>
+                            <li>יש להגדיר קריטריונים ברורים להערכת ביצועים.</li>
+                            <li>חשוב לטפח תרבות של אמון ופתיחות למשוב מ-AI.</li>
+                        </ul>
+                    `
+                },
+                "uc-3": {
+                    title: "עדכוני CRM פרואקטיביים",
+                    content: `
+                       <p class="mb-4">אחד החסמים הגדולים לאימוץ CRM הוא הנטל של הזנת נתונים ידנית. סוכן AI יכול להאזין לשיחות, לסרוק מיילים, ולעדכן אוטומטית רשומות, פעילויות והערות ב-CRM.</p>
+                        <h4 class="font-semibold mb-2">איך זה עובד?</h4>
+                        <p class="mb-4">הסוכן מסכם שיחות, מזהה פריטי פעולה, ומעדכן את השדות הרלוונטיים ב-CRM, מה שמבטיח שהנתונים תמיד רעננים ומדויקים.</p>
+                        <h4 class="font-semibold mb-2">איך לבנות את זה?</h4>
+                        <p class="mb-4">יש לזהות את משימות הזנת הנתונים החוזרות ביותר, ולהגדיר "פעולות" ב-Agentforce שיבצעו את העדכונים באופן אוטומטי, תוך שילוב עם Data Cloud לאיסוף נתונים מכלל המערכות.</p>
+                        <h4 class="font-semibold mb-2">שיקולים מרכזיים:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>דורש אינטגרציה חלקה בין כלים (CRM, מייל, טלפוניה).</li>
+                            <li>יש להגדיר כללים ברורים מתי נדרש אישור אנושי לעדכון.</li>
+                        </ul>
+                    `
+                },
+                 "uc-4": {
+                    title: "יצירת הצעות מחיר ומסמכים",
+                    content: `
+                       <p class="mb-4">סוכני AI יכולים לייעל באופן דרמטי את יצירת הצעות המכירה, החוזים ומסמכים אחרים, ולשחרר את נציגי המכירות ממשימות אדמיניסטרטיביות.</p>
+                        <h4 class="font-semibold mb-2">איך זה עובד?</h4>
+                        <p class="mb-4">הסוכן יכול לקבל קלט כמו הערות קוליות או מסמך RFP, ולייצר הצעת מחיר מלאה, כולל פירוט פתרונות, הערכת מאמץ וציר זמן, תוך שליפת נתונים מה-CRM.</p>
+                        <h4 class="font-semibold mb-2">איך לבנות את זה?</h4>
+                        <p class="mb-4">יש להגדיר תבניות מסמכים סטנדרטיות וליצור הנחיות ב-Prompt Builder שיאפשרו לסוכן למלא אותן בנתונים רלוונטיים מה-CRM.</p>
+                        <h4 class="font-semibold mb-2">שיקולים מרכזיים:</h4>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>דיוק הנתונים ב-CRM הוא קריטי.</li>
+                            <li>יש לשלב מנגנון "אדם בלולאה" לאישור סופי של מסמכים משפטיים או פיננסיים.</li>
+                        </ul>
+                    `
+                }
+            };
+
+            const competitorGrid = document.getElementById('competitor-grid');
+            const modal = document.getElementById('competitor-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalSegment = document.getElementById('modal-segment');
+            const modalBody = document.getElementById('modal-body');
+            const modalClose = document.getElementById('modal-close');
+
+            function createCompetitorCard(name, data) {
+                const card = document.createElement('div');
+                card.className = 'competitor-card bg-white p-6 rounded-lg shadow-md cursor-pointer hover:shadow-xl hover:scale-105 transition-all duration-300';
+                card.dataset.segment = data.segment;
+                card.dataset.name = name;
+
+                card.innerHTML = `
+                    <h3 class="text-xl font-bold text-slate-900">${name}</h3>
+                    <p class="text-sm text-teal-600 font-semibold mt-1">${data.segment}</p>
+                    <p class="text-slate-600 mt-2 text-sm"><strong>תחומי מיקוד AI:</strong> ${data.focus.join(', ')}</p>
+                `;
+                
+                card.addEventListener('click', () => openModal(name, data));
+                return card;
+            }
+
+            function renderGrid(filter = 'all') {
+                competitorGrid.innerHTML = '';
+                Object.entries(competitorData).forEach(([name, data]) => {
+                    if (name === "ICL Group") return;
+                    if (filter === 'all' || data.segment === filter) {
+                        const card = createCompetitorCard(name, data);
+                        competitorGrid.appendChild(card);
+                    }
+                });
+            }
+
+            function openModal(name, data) {
+                modalTitle.textContent = name;
+                modalSegment.textContent = data.segment;
+                modalBody.innerHTML = data.content;
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.style.opacity = '1';
+                    modal.style.pointerEvents = 'auto';
+                    modal.querySelector('div').style.transform = 'scale(1)';
+                }, 10);
+            }
+
+            function closeModal() {
+                modal.style.opacity = '0';
+                modal.style.pointerEvents = 'none';
+                modal.querySelector('div').style.transform = 'scale(0.95)';
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            }
+
+            modalClose.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('bg-teal-500', 'text-white');
+                        b.classList.add('bg-white', 'text-slate-700');
+                    });
+                    btn.classList.add('bg-teal-500', 'text-white');
+                    btn.classList.remove('bg-white', 'text-slate-700');
+                    renderGrid(btn.dataset.filter);
+                });
+            });
+
+            const useCaseTabs = document.querySelectorAll('.use-case-tab');
+            const useCaseContent = document.getElementById('use-case-content');
+            
+            function updateUseCaseContent(targetId) {
+                const data = useCaseData[targetId];
+                useCaseContent.innerHTML = `
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">${data.title}</h3>
+                    ${data.content}
+                `;
+            }
+
+            useCaseTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    useCaseTabs.forEach(t => {
+                        t.classList.remove('bg-teal-500', 'text-white');
+                        t.classList.add('bg-white', 'text-slate-600');
+                    });
+                    tab.classList.add('bg-teal-500', 'text-white');
+                    tab.classList.remove('bg-white', 'text-slate-600');
+                    updateUseCaseContent(tab.dataset.target);
+                });
+            });
+
+            const competitorFocusCtx = document.getElementById('competitorFocusChart').getContext('2d');
+            const focusLabels = ["חקלאות מדויקת", "תפעול ושרשרת אספקה", "שירות לקוחות", "מו\"פ"];
+            const chartData = {
+                labels: Object.keys(competitorData).filter(name => name !== "ICL Group"),
+                datasets: focusLabels.map((label, index) => ({
+                    label: label,
+                    data: Object.entries(competitorData).filter(([name, _]) => name !== "ICL Group").map(([_, data]) => data.focus.includes(label) ? 1 : 0),
+                    backgroundColor: ['#14b8a6', '#0ea5e9', '#f59e0b', '#6366f1'][index],
+                }))
+            };
+
+            new Chart(competitorFocusCtx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            display: false,
+                        },
+                        y: {
+                            stacked: true,
+                            ticks: {
+                                font: {
+                                    family: "'Assistant', sans-serif",
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: "'Assistant', sans-serif",
+                                }
+                            }
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    }
+                }
+            });
+
+            const iclVsCompetitorsCtx = document.getElementById('iclVsCompetitorsChart').getContext('2d');
+            const fertilizerCompetitors = Object.values(competitorData).filter(d => d.segment === 'דשנים' && d !== competitorData['ICL Group']);
+            const competitorAverages = focusLabels.map(label => {
+                const total = fertilizerCompetitors.reduce((sum, comp) => sum + (comp.focus.includes(label) ? 1 : 0), 0);
+                return (total / fertilizerCompetitors.length) * 100;
+            });
+            const iclDataPoints = focusLabels.map(label => competitorData['ICL Group'].focus.includes(label) ? 100 : 0);
+
+            new Chart(iclVsCompetitorsCtx, {
+                type: 'radar',
+                data: {
+                    labels: focusLabels,
+                    datasets: [{
+                        label: 'ICL Group',
+                        data: iclDataPoints,
+                        fill: true,
+                        backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                        borderColor: 'rgb(20, 184, 166)',
+                        pointBackgroundColor: 'rgb(20, 184, 166)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(20, 184, 166)'
+                    }, {
+                        label: 'ממוצע מתחרי דשנים',
+                        data: competitorAverages,
+                        fill: true,
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        pointBackgroundColor: 'rgb(59, 130, 246)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(59, 130, 246)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    },
+                     plugins: {
+                        legend: {
+                             labels: {
+                                font: {
+                                    family: "'Assistant', sans-serif",
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: false
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: {
+                                stepSize: 25,
+                                backdropColor: 'rgba(0,0,0,0)'
+                            },
+                             pointLabels: {
+                                font: {
+                                    size: 12,
+                                    family: "'Assistant', sans-serif"
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 80) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active-nav');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active-nav');
+                    }
+                });
+            });
+
+            renderGrid();
+            updateUseCaseContent('uc-1');
+        });
+    </script>
+
+</body>
+</html>
